@@ -1,0 +1,82 @@
+body {
+  width: fit-content;
+  margin: 0 auto;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  color: rgb(187, 93, 187);
+  font-family: "Space Grotesk", sans-serif;
+}
+a,
+a:visited,
+a:hover,
+a:active {
+  color: inherit;
+}
+form {
+  text-align: right;
+}
+.body {
+  border: 0px;
+}
+.main-card {
+  padding: 10px 90px;
+  border: 5px solid rgb(29, 12, 24);
+  border-radius: 8px;
+  background: radial-gradient(
+    328px at 2.9% 15%,
+    rgb(191, 224, 251) 0%,
+    rgb(232, 233, 251) 25.8%,
+    rgb(252, 239, 250) 50.8%,
+    rgb(234, 251, 251) 77.6%,
+    rgb(240, 251, 244) 100.7%
+  );
+}
+.btn {
+  color: rgb(206, 31, 31);
+  border-color: rgb(172, 102, 102);
+}
+.weather {
+  padding: 20px 0px 20px 0px;
+}
+.current-weather {
+  border: 0px;
+}
+.current-temp,
+.city {
+  padding: 0;
+}
+.place-time {
+  border: 0px;
+}
+.row {
+  text-align: center;
+}
+.weekdays {
+  padding: 40px 0px 20px 0px;
+}
+.current-weather,
+.place-time {
+  background-color: rgba(245, 245, 245, 0);
+}
+
+.wkd-icon {
+  color: #a7245a;
+  font-size: 30px;
+}
+.wkd-icon:hover {
+  color: #000000;
+}
+.conditions {
+  font-size: 12px;
+}
+.date,
+.time,
+.conditions {
+  color: #080407;
+}
+.low-temp {
+  color: #531de7;
+}
+.high-temp {
+  color: #1f051afb;
+}
