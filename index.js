@@ -1,15 +1,31 @@
 let now = new Date();
-// days of the week
-let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-let today = days[now.getDay()];
-console.log(today);
+function formatDate() {
+  let days = [
+    `Sunday`,
+    `Monday`,
+    `Tuesday`,
+    `Wednesday`,
+    `Thursday`,
+    `Friday`,
+    `Saturday`,
+  ];
+  let day = days[now.getDay()];
+  let months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sept",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
 
-let spanDate = document.querySelector("#date");
-spanDate.innerHTML = today;
-
-// current time
-function currentTime(now) {
   let hours = now.getHours();
   if (hours < 10) {
     hours = `0${hours}`;
@@ -19,70 +35,96 @@ function currentTime(now) {
     minutes = `0${minutes}`;
   }
 
-  let newTime = `${hours}:${minutes}`;
-  return newTime;
+  let month = months[now.getMonth()];
+  let date = now.getDate();
+
+  let todaysDate = `${day}, <br> ${month} ${date}, ${hours}:${minutes}`;
+  return todaysDate;
+  return `${day} ${formatHours(timestamp)}`;
+}
+let h2 = document.querySelector("h2");
+h2.innerHTML = formatDate(new Date());
+
+function formatHours(timestamp) {
+  let date = new Date(timestamp);
+  let hours = date.getHours();
+  if (hours < 10) {
+    hours = `0${hours}`;
+  }
+  let minutes = date.getMinutes();
+  if (minutes < 10) {
+    minutes = `0${minutes}`;
+  }
+
+  return `${hours}:${minutes}`;
 }
 
-let spanTime = document.querySelector("#time");
-spanTime.innerHTML = currentTime(now);
+function showTemp(response) {
+  let todaysTemp = document.querySelector("#temp");
+  let temperature = Math.round(response.data.main.temp);
+  todaysTemp.innerHTML = temperature;
+  let cityEntered = document.querySelector("#city-entered");
+  cityEntered.innerHTML = response.data.name;
+  let description = document.querySelector("#description");
+  description.innerHTML = response.data.weather[0].description;
+  let humidityElement = document.querySelector("#humidity");
+  humidityElement.innerHTML = response.data.main.humidity;
+  let windElement = document.querySelector("#wind");
+  windElement.innerHTML = Math.round(response.data.wind.speed);
+  let iconElement = document.querySelector("#mainIcon");
+  iconElement.setAttribute(
+    "src",
+    `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
+  );
+  iconElement.setAttribute("alt", response.data.weather[0].description);
 
-// search bar
-function enterCity(event) {
+  function toCelsius(event) {
+    event.preventDefault();
+    let tempDisplay = document.querySelector("#temp");
+    tempDisplay.innerHTML = temperature;
+  }
+
+  function toFahrenheit(event) {
+    event.preventDefault();
+    let tempDisplay = document.querySelector("#temp");
+    tempDisplay.innerHTML = Math.round((temperature / 5) * 9 + 32);
+  }
+
+  let degreesC = document.querySelector("#degrees-c");
+  degreesC.addEventListener("click", toCelsius);
+
+  let degreesF = document.querySelector("#degrees-f");
+  degreesF.addEventListener("click", toFahrenheit);
+}
+function search(event) {
   event.preventDefault();
-  let cityInput = document.querySelector("#enter-city").value;
-  searchCity(cityInput);
-  console.log(cityInput.value);
+  let searchInput = document.querySelector("#city-input");
+  let cityEntered = document.querySelector("#city-entered");
+  cityEntered.innerHTML = searchInput.value;
+  searchResult(searchInput.value);
+}
+
+function searchResult(city) {
+  let apiKey = "fc2b2675a903fad5be91075495d02e43";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(showTemp);
 }
 
 let cityForm = document.querySelector("#city-search");
-cityForm.addEventListener("submit", enterCity);
+cityForm.addEventListener("submit", search);
 
-// search current location
-function searchLocation(position) {
-  let apiKey = "1f983d213665d2d7dbab69270eb302b3";
+function getLocationTemperature(position) {
   let lat = position.coords.latitude;
   let lon = position.coords.longitude;
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
-  axios.get(apiUrl).then(showWeather);
+  let apiKey = "fc2b2675a903fad5be91075495d02e43";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(showTemp);
+}
+function getTemp() {
+  navigator.geolocation.getCurrentPosition(getLocationTemperature);
 }
 
-function getCurrentLocation(event) {
-  event.preventDefault();
-  navigator.geolocation.getCurrentPosition(searchLocation);
-}
-
-// api call City
-
-function searchCity(cityInput) {
-  let apiKey = "1f983d213665d2d7dbab69270eb302b3";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityInput}&appid=${apiKey}&units=metric`;
-
-  axios.get(apiUrl).then(showWeather);
-}
-
-// show weather
-
-function showWeather(response) {
-  console.log(response);
-  document.querySelector("#city").innerHTML = response.data.name;
-  document.querySelector("#current-temp").innerHTML = Math.round(
-    response.data.main.temp
-  );
-  document.querySelector("#wind-speed").innerHTML = Math.round(
-    response.data.wind.speed
-  );
-  document.querySelector("#humidity").innerHTML = response.data.main.humidity;
-  document.querySelector("#blue-temp").innerHTML = Math.round(
-    response.data.main.temp_min
-  );
-  document.querySelector("#red-temp").innerHTML = Math.round(
-    response.data.main.temp_max
-  );
-}
-
-// current
-let currentLocation = document.querySelector("#current");
-currentLocation.addEventListener("click", getCurrentLocation);
-
+let locationSearch = document.querySelector("#current-location");
+locationSearch.addEventListener("click", getTemp);
 // default city
-searchCity("Ljubljana");
+https: searchCity("Ljubljana");
