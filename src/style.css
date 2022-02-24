@@ -1,10 +1,5 @@
 body {
   font-family: arial, sans-serif;
-  background: linear-gradient(
-    90deg,
-    rgb(243, 221, 178) 6%,
-    rgb(102, 222, 240) 86%
-  );
 }
 
 h1 {
@@ -35,18 +30,21 @@ li:first-letter {
 }
 
 .weather-app-wrapper {
-  max-width: 600px;
+  max-width: 700px;
+  max-height: 50px;
   margin: 30px;
 }
 
 .weather-app {
   padding: 20px;
-  border: 1px solid #296ec9;
-  border-radius: 5px;
+  border: 45px;
+  border-radius: 25px;
+  background: linear-gradient(360deg, rgb(245, 242, 151) 2%, rgb(147, 243, 209) 100%); (360deg, rgb(245, 242, 151) 2%, rgb(147, 243, 209) 100%);
+box-shadow: 10px 10px 20px rgba(38, 90, 33, 0.2);
 }
 
 .overview {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .weather-temperature img {
